@@ -2,14 +2,23 @@
   'use strict';
 
   angular
+    // Declare our module
     .module('material.components.fabSpeedDial', [
       'material.core',
       'material.components.fabTrigger',
       'material.components.fabActions'
     ])
+
+    // Register our directive
     .directive('mdFabSpeedDial', MdFabSpeedDialDirective)
+
+    // Register our custom animations
     .animation('.md-fling', MdFabSpeedDialFlingAnimation)
-    .animation('.md-scale', MdFabSpeedDialScaleAnimation);
+    .animation('.md-scale', MdFabSpeedDialScaleAnimation)
+
+    // Register a service for each animation so that we can easily inject them into unit tests
+    .service('mdFabSpeedDialFlingAnimation', MdFabSpeedDialFlingAnimation)
+    .service('mdFabSpeedDialScaleAnimation', MdFabSpeedDialScaleAnimation);
 
   /**
    * @ngdoc directive
@@ -199,10 +208,12 @@
       addClass: function(element, className, done) {
         if (element.hasClass('md-fling')) {
           runAnimation(element);
+          done();
         }
       },
       removeClass: function(element, className, done) {
         runAnimation(element);
+        done();
       }
     }
   }
@@ -229,10 +240,12 @@
     return {
       addClass: function(element, className, done) {
         runAnimation(element);
+        done();
       },
 
       removeClass: function(element, className, done) {
         runAnimation(element);
+        done();
       }
     }
   }
